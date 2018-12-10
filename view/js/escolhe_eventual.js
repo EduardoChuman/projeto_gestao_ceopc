@@ -1,14 +1,12 @@
 var _tabelaListaEmpregado;
 var _tabelaEmpregado;
-var _data;
 
 $(document).ready(function () 
 {
     inicializarTabelaEmails();
     atualizarDataTable();
     carregaListaEmpregados();
-    carregaListaCelulas();
-    alterarCelula();
+    alterarEventual();
 });
 
 function inicializarTabelaEmails() 
@@ -40,12 +38,12 @@ function inicializarTabelaEmails()
         responsive: true,
         columns: 
         [
-            { data: "NOME", title: "Nome", name:"nome", width: "50%"}, 
+            { data: "NOME", title: "Nome", width: "50%"}, 
             { data: "MATRICULA", title: "Matricula", class: "dt-center", width: "10%"}, 
             { data: "NOME_CELULA", title: "Célula", class: "dt-center", width: "20%" },
             // aqui vamos criar a coluna de ação
             { data: "BOTAO",
-                title: "Nova Célula",
+                title: "Eventual",
                 render: function()
                 {
                     return "<a rel='tooltip' class='btn btn-default btn-xs btn-alterar' title='Alterar'><span class='glyphicon glyphicon-pencil' ></span></a>";
@@ -71,7 +69,7 @@ function carregaListaEmpregados()
    $.ajax(
     {
         method: "GET",
-        url: "http://www.ceopc.hom.sp.caixa/api/public/gestao_empregados_ceopc.php/lista_empregados_ceopc/",
+        url: "http://www.ceopc.hom.sp.caixa/api/public/gestao_empregados_ceopc.php/lista_escolhe_eventual/",
         dataType: "json",
     })
     .done(function (json) 
@@ -86,26 +84,16 @@ function carregaListaEmpregados()
     });
 }
 
-function carregaListaCelulas() 
-{
-    $.ajax(
+function criarMapaEmpregados(json)
+{ 
+    _tabelaEmpregado = new Map();
+    $.each(json, function(i, item)
     {
-        method: "GET",
-        url: "http://www.ceopc.hom.sp.caixa/api/public/gestao_empregados_ceopc.php/lista_celulas_ceopc/",
-        dataType: "json",
-    })
-    .done(function (json) 
-    {
-        _data = json                   
-    })
-    .fail(function (jqXHR, textStatus, errorThrown) 
-    {
-        console.log("deu erro")
-        alert('Problemas ao tentar salvar!\n' + jqXHR.status + ' ' + jqXHR.statusText + errorThrown);
+        _tabelaEmpregado.set(item.MATRICULA, item);
     });
 }
 
-function alterarCelula() 
+function alterarEventual() 
 {
     $('#tabelaEmpregado').on('click', 'tbody .btn-alterar', function () 
     {
@@ -118,26 +106,16 @@ function alterarCelula()
         
         $("#matriculaEmpregado").val(empregado.MATRICULA);
         $("#nomeEmpregado").val(empregado.NOME);
-        $("#perfilEmpregado").val(empregado.NIVEL_ACESSO);     
-        $("#celulaAntiga").val(empregado.NOME_CELULA); 
-        
-        var $select = $('#idCelula');
-        
-        $.each(_data, function(i, val)
-        {
-            $select.append($('<option />', { value: _data[i].ID, text: _data[i].NOME_CELULA }));
-        });
+        $("#perfilEmpregado").val(empregado.NIVEL_ACESSO);
+        $("#idCelula").val(empregado.ID_CELULA);      
+        $("#nomeCelula").val(empregado.NOME_CELULA); 
 
         $("#salvarAltera").show();
         $("#trocaCelulaModal").modal('show');
     });
 }
 
-function criarMapaEmpregados(json)
-{ 
-    _tabelaEmpregado = new Map();
-    $.each(json, function(i, item)
-    {
-        _tabelaEmpregado.set(item.MATRICULA, item);
-    });
-}
+
+
+
+
