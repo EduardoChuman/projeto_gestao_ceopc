@@ -1,5 +1,4 @@
 <?php
-
     // VERIFICA SE EXISTEM ERROS DE EXECUÇÃO NO CÓDIGO
     ini_set('display_errors',1);
 
@@ -8,14 +7,16 @@
 
     // INSTANCIA O OBJETO EMPREGADO CEOPC
 	$empregadoCeopc = new EmpregadoCeopc();
-    $empregadoCeopc->setIdCelula(5); 
-    
-    $arrayListaEmpregadosCeopc = json_decode($empregadoCeopc->listarEmpregadosCeopc());
-    // $arrayListaCelulasCeopc = json_decode($empregadoCeopc->listarCelulasCeopc());
+	// $empregadoCeopc->setNivelAcesso('GESTOR');
+	// $empregadoCeopc->setEventual('SIM');
 
-    // var_dump($arrayListaEmpregadosCeopc);
-    // var_dump($arrayListaCelulasCeopc);
+	// var_dump($empregadoCeopc);
 
+	// if ($empregadoCeopc->getNivelAcesso() != "GESTOR" || $empregadoCeopc->getEventual() != "SIM") 
+	// {
+	// 	header("location:http://www.geopc.mz.caixa/esteiracomex/sem_acesso.php");
+	// 	exit;
+	// }
 ?>
 
 <!DOCTYPE html>
@@ -26,7 +27,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<link rel="stylesheet" type="text/css" href="../../esteiracomex2/bootstrap/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
-    <title>Gestão dos Empregados CEOPC</title>
+    <title>Movimentar Empregado CEOPC</title>
 </head>
 <body>
 
@@ -37,7 +38,7 @@
 <!-- Modal Alterar e Visualizar--> 
 
 	<div class="modal fade" id="trocaCelulaModal" tabindex="-1" role="dialog" aria-labelledby="alteraCelulaEmpregado">
-		<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-dialog modal-md" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
