@@ -13,3 +13,15 @@
     echo "A célula do empregado foi atualizada com sucesso.";
 ?>
 
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sucesso!</title>
+</head>
+<body>
+	<script language="JavaScript" type="text/javascript">
+        window.onload = setTimeout("location.href = '../view/movimentar_empregado_ceopc.html'",2500);
+    </script>
+</body>
+</html>
+

@@ -1,6 +1,7 @@
 var _tabelaListaEmpregado;
 var _tabelaEmpregado;
 var _data;
+var _dadosEmpregado;
 
 $(document).ready(function () 
 {
@@ -8,6 +9,7 @@ $(document).ready(function ()
     atualizarDataTable();
     carregaListaEmpregados();
     carregaListaCelulas();
+    carregaDadosEmpregado();
     alterarCelula();
 });
 
@@ -105,6 +107,27 @@ function carregaListaCelulas()
     });
 }
 
+function carregaDadosEmpregado() 
+{
+    $.ajax(
+    {
+        method: "GET",
+        url: "http://www.ceopc.hom.sp.caixa/api/public/atendimento_web.php/dados_empregado_ceopc/",
+        dataType: "json",
+    })
+    .done(function (json) 
+    {
+        _dadosEmpregado = json;
+
+        console.log(_dadosEmpregado);
+    })
+    .fail(function (jqXHR, textStatus, errorThrown) 
+    {
+        console.log("deu erro")
+        alert('Problemas ao tentar salvar!\n' + jqXHR.status + ' ' + jqXHR.statusText + errorThrown);
+    });
+}
+
 function alterarCelula() 
 {
     $('#tabelaEmpregado').on('click', 'tbody .btn-alterar', function () 
@@ -127,6 +150,7 @@ function alterarCelula()
         {
             $select.append($('<option />', { value: _data[i].ID, text: _data[i].NOME_CELULA }));
         });
+        _data = ""; // LIMPA A VARIÁVEL PARA EVITAR A DUPLICIDADE DE OPÇÕES NO MODAL
 
         $("#salvarAltera").show();
         $("#trocaCelulaModal").modal('show');
